@@ -44,6 +44,14 @@ def extractFeature(im_filename, eyelashes_thres=80, use_multiprocess=True):
 	"""
 	# Perform segmentation
 	im = imread(im_filename, 0)
+	return extractFeatureFromImage(im, eyelashes_thres, use_multiprocess, im_filename)
+
+
+def extractFeatureFromImage(im, eyelashes_thres=80, use_multiprocess=False, im_filename=None):
+	"""Extract an iris template from an already-decoded grayscale image."""
+	if im is None or im.ndim != 2 or not im.size:
+		raise ValueError("Expected a non-empty grayscale eye image")
+
 	ciriris, cirpupil, imwithnoise = segment(im, eyelashes_thres, use_multiprocess)
 
 	# Perform normalization

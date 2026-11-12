@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f9f7">
+  <title>Iris Access</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#home" data-screen="home" aria-label="Iris Access home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Iris Access</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <button class="nav-link" type="button" data-screen="help">Privacy &amp; help</button>
+    </nav>
+  </header>
+
+  <main id="main" class="page-shell">
+    <p id="global-status" class="sr-only" role="status" aria-live="polite"></p>
+
+    <section id="screen-home" class="screen welcome-screen" data-view="home" aria-labelledby="welcome-title">
+      <div class="welcome-copy">
+        <p class="eyebrow">PRIVATE ACCESS DEMO</p>
+        <h1 id="welcome-title" tabindex="-1">Iris Access</h1>
+        <p class="welcome-subtitle">Secure access using your iris pattern.</p>
+        <p class="body-copy">Register once with your consent, then verify that it is you when you return.</p>
+        <div class="welcome-actions">
+          <button class="button button-primary" type="button" data-screen="register">Register</button>
+          <button class="button button-secondary" type="button" data-screen="verify">Verify identity</button>
+        </div>
+        <p class="notice-line">This research demo has no liveness check and must not be used to protect accounts or devices.</p>
+      </div>
+      <div class="welcome-art" aria-hidden="true">
+        <span class="orbit orbit-outer"></span>
+        <span class="orbit orbit-inner"></span>
+        <span class="orbit-center"></span>
+      </div>
+    </section>
+
+    <section id="screen-register" class="screen flow-screen" data-view="register" hidden aria-labelledby="register-title">
+      <div class="flow-heading">
+        <button class="back-link" type="button" data-screen="home">Back</button>
+        <p class="step-label">Step <span id="register-step-number">1</span> of 3</p>
+        <h1 id="register-title" tabindex="-1">Register your iris</h1>
+        <p class="body-copy">We’ll guide you through a short, consent-based setup.</p>
+      </div>
+
+      <div id="register-stage-1" class="flow-content register-stage">
+        <label class="field-label" for="register-identifier">Account email or username</label>
+        <input id="register-identifier" class="text-input" type="text" autocomplete="username" maxlength="254" placeholder="you@example.com">
+        <p class="field-hint">We use this to find your registration later. It is transformed in this browser before being sent.</p>
+        <label class="consent-row" for="consent-check">
+          <input id="consent-check" type="checkbox">
+          <span>I understand and consent to registering my iris for this local demo. I can delete it later.</span>
+        </label>
+        <p class="privacy-inline">Only register yourself or someone who has given informed consent.</p>
+        <p id="register-input-error" class="message message-error" role="alert" hidden></p>
+        <button id="continue-register" class="button button-primary" type="button">Continue</button>
+      </div>
+
+      <div id="register-stage-2" class="flow-content register-stage" hidden>
+        <div class="camera-frame">
+          <video id="register-video" autoplay muted playsinline aria-label="Live camera preview"></video>
+          <img id="register-image-preview" alt="Selected eye image preview" hidden>
+          <div class="camera-placeholder" id="register-camera-placeholder">
+            <span class="camera-symbol" aria-hidden="true">◎</span>
+            <p>Camera preview will appear here</p>
+          </div>
+          <div class="eye-guide" aria-hidden="true"></div>
+        </div>
+        <p class="guide-caption">Position one eye inside the guide</p>
+        <ul class="scan-instructions">
+          <li>Remove sunglasses.</li>
+          <li>Look at the camera.</li>
+          <li>Keep your head still.</li>
+        </ul>
+        <p id="register-scan-status" class="message" role="status" aria-live="polite">Ready when your preview is clear.</p>
+        <p id="register-scan-error" class="message message-error" role="alert" hidden></p>
+        <div class="action-row">
+          <button id="register-scan" class="button button-primary" type="button" disabled>Start scan</button>
+          <label class="file-link" for="register-file" role="button" tabindex="0">Choose an image instead</label>
+          <input id="register-file" class="sr-only" type="file" accept="image/jpeg,image/png,image/bmp" aria-label="Choose an eye image">
+        </div>
+        <button class="back-link" type="button" id="back-to-register-info">Back</button>
+      </div>
+
+      <div id="register-stage-3" class="flow-content register-stage" hidden>
+        <div class="confirm-mark" aria-hidden="true">&#10003;</div>
+        <h2>Ready to register?</h2>
+        <p class="body-copy">Your image is held temporarily to create your protected iris record. The original image is not saved.</p>
+        <p id="register-confirm-status" class="message" role="status" aria-live="polite"></p>
+        <p id="register-confirm-error" class="message message-error" role="alert" hidden></p>
+        <button id="save-registration" class="button button-primary" type="button">Save registration</button>
+        <button id="retake-registration" class="back-link" type="button">Retake scan</button>
+      </div>
+
+      <div id="register-complete" class="flow-content complete-state" hidden role="status" aria-live="polite">
+        <div class="confirm-mark" aria-hidden="true">&#10003;</div>
+        <p class="eyebrow">REGISTRATION COMPLETE</p>
+        <h2>You're registered.</h2>
+        <p class="body-copy">Your protected iris record is ready for verification.</p>
+        <button class="button button-primary" type="button" data-screen="verify">Verify identity</button>
+        <button class="back-link" type="button" data-screen="home">Return home</button>
+      </div>
+    </section>
+
+    <section id="screen-verify" class="screen flow-screen" data-view="verify" hidden aria-labelledby="verify-title">
+      <div class="flow-heading">
+        <button class="back-link" type="button" data-screen="home">Back</button>
+        <p class="eyebrow">VERIFY IDENTITY</p>
+        <h1 id="verify-title" tabindex="-1">Is it you?</h1>
+        <p class="body-copy">Enter the same account identifier and position your registered eye in the guide.</p>
+      </div>
+      <div class="flow-content">
+        <label class="field-label" for="verify-identifier">Account email or username</label>
+        <input id="verify-identifier" class="text-input" type="text" autocomplete="username" maxlength="254" placeholder="you@example.com">
+        <div class="camera-frame">
+          <video id="verify-video" autoplay muted playsinline aria-label="Live camera preview"></video>
+          <img id="verify-image-preview" alt="Selected eye image preview" hidden>
+          <div class="camera-placeholder" id="verify-camera-placeholder">
+            <span class="camera-symbol" aria-hidden="true">◎</span>
+            <p>Camera preview will appear here</p>
+          </div>
+          <div class="eye-guide" aria-hidden="true"></div>
+        </div>
+        <p class="guide-caption">Remove sunglasses, look at the camera, and hold still.</p>
+        <p id="verify-status" class="message" role="status" aria-live="polite">Your preview is ready when the camera is on.</p>
+        <p id="verify-error" class="message message-error" role="alert" hidden></p>
+        <div class="action-row">
+          <button id="verify-start" class="button button-primary" type="button" disabled>Verify me</button>
+          <label class="file-link" for="verify-file" role="button" tabindex="0">Choose an image instead</label>
+          <input id="verify-file" class="sr-only" type="file" accept="image/jpeg,image/png,image/bmp" aria-label="Choose an eye image">
+        </div>
+        <div id="verify-result" class="result-state" hidden role="status" aria-live="polite">
+          <h2 id="verify-result-title"></h2>
+          <p id="verify-result-description" class="body-copy"></p>
+          <button id="verify-again" class="button button-secondary" type="button">Try again</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-help" class="screen flow-screen help-screen" data-view="help" hidden aria-labelledby="help-title">
+      <div class="flow-heading">
+        <button class="back-link" type="button" data-screen="home">Back</button>
+        <p class="eyebrow">SETTINGS &amp; HELP</p>
+        <h1 id="help-title" tabindex="-1">Your data, your choice.</h1>
+        <p class="body-copy">This local research demo stores a protected iris record only after you consent.</p>
+      </div>
+
+      <section class="help-section" aria-labelledby="access-title">
+        <h2 id="access-title">Local app access</h2>
+        <p class="body-copy">Enter the access key from the PowerShell terminal running the local server. It stays in memory in this tab and is cleared when you close it.</p>
+        <label class="field-label" for="api-token">Local access key</label>
+        <div class="token-row">
+          <input id="api-token" class="text-input" type="password" autocomplete="off" spellcheck="false">
+          <button id="save-token" class="button button-secondary" type="button">Use key</button>
+        </div>
+        <p id="token-status" class="message" role="status" aria-live="polite">No access key entered.</p>
+      </section>
+
+      <section class="help-section" aria-labelledby="privacy-title">
+        <h2 id="privacy-title">Privacy</h2>
+        <ul class="privacy-list">
+          <li>Camera images are processed in memory and are not saved by this app.</li>
+          <li>A protected iris record is stored encrypted on the local server after registration.</li>
+          <li>Your account identifier is transformed in this browser before it is sent. This is pseudonymous, not anonymous.</li>
+          <li>This demo has no liveness detection. A photo or replay may fool it; do not use it to protect an account or device.</li>
+          <li>Only register yourself or another person with informed consent. Check local laws and dataset terms before collecting or testing biometric data.</li>
+        </ul>
+      </section>
+
+      <section class="help-section delete-section" aria-labelledby="delete-title">
+        <h2 id="delete-title">Delete a registration</h2>
+        <p class="body-copy">Enter the same account identifier used to register. This removes its protected record from the local database.</p>
+        <label class="field-label" for="delete-identifier">Account email or username</label>
+        <input id="delete-identifier" class="text-input" type="text" autocomplete="username" maxlength="254">
+        <p id="delete-status" class="message" role="status" aria-live="polite"></p>
+        <button id="delete-record" class="button button-danger" type="button">Delete my registration</button>
+      </section>
+
+      <section class="help-section" aria-labelledby="trouble-title">
+        <h2 id="trouble-title">Troubleshooting</h2>
+        <details>
+          <summary>Camera preview is blank</summary>
+          <p>Allow camera access in your browser, close other camera apps, or choose an image instead. This demo needs a clear, close eye image.</p>
+        </details>
+        <details>
+          <summary>It says registration already exists</summary>
+          <p>Use Verify identity, or delete the existing registration before registering again.</p>
+        </details>
+        <details>
+          <summary>Verification is unsuccessful</summary>
+          <p>Try a bright, clear eye image without sunglasses. This research demo is not calibrated for real identity decisions.</p>
+        </details>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Local research demo</span>
+    <span>No raw image storage</span>
+  </footer>
+</body>
+</html>
